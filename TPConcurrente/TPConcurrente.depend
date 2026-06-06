@@ -1,0 +1,34 @@
+# depslib dependency file v1.0
+1780708216 source:c:\users\user\onedrive\documentos\code\programacion concurrente\tpconcurrente\main.cpp
+	"pcv.h"
+	"semaforo.h"
+	<iostream>
+	<thread>
+	<queue>
+	<vector>
+	<fstream>
+	<ctime>
+
+1780703653 c:\users\user\onedrive\documentos\code\programacion concurrente\tpconcurrente\pcv.h
+
+1780703653 c:\users\user\onedrive\documentos\code\programacion concurrente\tpconcurrente\semaforo.h
+	<mutex>
+	<condition_variable>
+
+1780703653 source:c:\users\user\onedrive\documentos\code\programacion concurrente\tpconcurrente\semaforo.cpp
+	"semaforo.h"
+	<mutex>
+	<condition_variable>
+
+1780711104 source:c:\users\user\onedrive\documentos\code\programacion concurrente\tpconcurrente\pcv.cpp
+	"pcv.h"
+	"semaforo.h"
+	<iostream>
+	<queue>
+	<mutex>
+	<thread>
+	<chrono>
+	<fstream>
+	<ctime>
+	<cstring>
+

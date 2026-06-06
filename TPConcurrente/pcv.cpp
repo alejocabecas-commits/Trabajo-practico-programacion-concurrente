@@ -5,6 +5,9 @@
 #include <mutex>
 #include <thread>
 #include <chrono>
+#include <fstream>
+#include <ctime>
+#include <cstring>
 
 extern int trabajosTotales;
 extern int cantJobsProductor;
@@ -23,6 +26,11 @@ extern Semaforo hay_espacio;
 extern Semaforo hay_datos;
 extern Semaforo hay_jobs;
 
+std::ofstream logFile("actividad.log");
+time_t ahora = time(nullptr);
+
+
+
 void productor(){
     for(int i=0; i<cantJobsProductor;i++){
         Job nuevo;
@@ -39,7 +47,12 @@ void productor(){
 
 
             mtx_logs.lock();
-            std::cout<<"Creado el job numero: "<< nroTrabajo<<" de categoria premium"<<"\n";
+
+            //std::cout<<"Creado el job numero: "<< nroTrabajo<<" de categoria premium"<<"\n";
+             char* fecha = ctime(&ahora);
+                fecha[strlen(fecha)-1] = '\0';
+            logFile<< "[" <<  fecha << "]"<<"Creado el job numero: "<< nroTrabajo<<" de categoria premium"<<"\n";
+
             mtx_logs.unlock();
 
             nuevo.premium = true;
@@ -56,7 +69,12 @@ void productor(){
             signal(hay_jobs); //Signal para avisar a el asignador que ya hay jobs para asignar en la Vram
 
             mtx_logs.lock();
-            std::cout<<"Job numero: "<< nuevo.nroSolicitud <<" encolado con exito"<<"\n";
+
+                //std::cout<<"Job numero: "<< nuevo.nroSolicitud <<" encolado con exito"<<"\n";
+                char* fecha2 = ctime(&ahora);
+                fecha2[strlen(fecha2)-1] = '\0';
+                logFile<< "[" << fecha2 << "]"<<"Job numero: "<< nuevo.nroSolicitud <<" encolado con exito"<<"\n";
+
             mtx_logs.unlock();
 
 
@@ -71,8 +89,13 @@ void productor(){
             nuevo.premium = false;
 
             mtx_logs.lock();
-            std::cout<<"Creado el job numero: "<< nroTrabajo<<" de categoria free"<<"\n";
-            mtx_logs.unlock();
+
+            //std::cout<<"Creado el job numero: "<< nroTrabajo<<" de categoria free"<<"\n";
+            char* fecha = ctime(&ahora);
+                fecha[strlen(fecha)-1] = '\0';
+            logFile<< "[" << fecha << "]"<<"Creado el job numero: "<< nroTrabajo<<" de categoria free"<<"\n";
+
+           mtx_logs.unlock();
 
 
 
@@ -85,7 +108,12 @@ void productor(){
             signal(hay_jobs);//Signal para avisar a el asignador que ya hay jobs para asignar en la Vram
 
             mtx_logs.lock();
-            std::cout<<"Job numero: "<< nuevo.nroSolicitud <<" encolado con exito"<<"\n";
+
+            //std::cout<<"Job numero: "<< nuevo.nroSolicitud <<" encolado con exito"<<"\n";
+            char* fecha2 = ctime(&ahora);
+                fecha2[strlen(fecha2)-1] = '\0';
+            logFile<< "[" << fecha2 << "]"<<"Job numero: "<< nuevo.nroSolicitud <<" encolado con exito"<<"\n";
+
             mtx_logs.unlock();
         }
     }
@@ -112,7 +140,12 @@ void asignador(){
             mtx_vram.unlock();
 
             mtx_logs.lock();
-            std::cout<<"Job premium numero "<< asignar.nroSolicitud <<" asignado a la vram con exito" <<"\n";
+
+            //std::cout<<"Job premium numero "<< asignar.nroSolicitud <<" asignado a la vram con exito" <<"\n";
+            char* fecha = ctime(&ahora);
+                fecha[strlen(fecha)-1] = '\0';
+            logFile<< "[" << fecha << "]"<<"Job premium numero "<< asignar.nroSolicitud <<" asignado a la vram con exito" <<"\n";
+
             mtx_logs.unlock();
         }
         else{
@@ -128,7 +161,12 @@ void asignador(){
             mtx_vram.unlock();
 
             mtx_logs.lock();
-            std::cout<<"Job free numero "<< asignar.nroSolicitud <<" asignado a la vram con exito" <<"\n";
+
+            //std::cout<<"Job free numero "<< asignar.nroSolicitud <<" asignado a la vram con exito" <<"\n";
+            char* fecha = ctime(&ahora);
+                fecha[strlen(fecha)-1] = '\0';
+            logFile<< "[" << fecha << "]"<<"Job free numero "<< asignar.nroSolicitud <<" asignado a la vram con exito" <<"\n";
+
             mtx_logs.unlock();
         }
     }
@@ -147,9 +185,12 @@ void consumidor(){
         mtx_vram.unlock();
 
         mtx_logs.lock();
-        std::cout<<"Se termino de procesar el job numero "<< procesando.nroSolicitud <<" con exito" <<"\n";
+
+         //std::cout<<"Se termino de procesar el job numero "<< procesando.nroSolicitud <<" con exito" <<"\n";
+         char* fecha = ctime(&ahora);
+                fecha[strlen(fecha)-1] = '\0';
+         logFile<< "[" << fecha << "]"<<"Se termino de procesar el job numero "<< procesando.nroSolicitud <<" con exito" <<"\n";
+
         mtx_logs.unlock();
     }
-
-
 }

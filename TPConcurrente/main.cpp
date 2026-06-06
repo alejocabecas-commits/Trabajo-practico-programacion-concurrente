@@ -4,6 +4,8 @@
 #include <thread>
 #include <queue>
 #include <vector>
+#include <fstream>
+#include <ctime>
 
 Semaforo hay_espacio;
 Semaforo hay_datos;
@@ -27,7 +29,9 @@ int cantJobsProductor=500;
 int cantJobsConsumidor=500;
 int cantPremium=100;*/
 
+
 int main() {
+
     init(hay_jobs, 0);
     init(hay_datos, 0);
     init(hay_espacio, 5);
